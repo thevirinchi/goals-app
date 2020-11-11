@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useEffect, useState} from 'react';
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button, ScrollView, FlatList } from 'react-native';
 
 export default function App() {
 
@@ -12,8 +12,10 @@ export default function App() {
 	}
 
 	const addGoalHandler = () => {
-		setGoals(currentGoals => [newGoal, ...currentGoals])
-		setNewGoal("")
+		if(newGoal.length>2){
+			setGoals(currentGoals => [newGoal, ...currentGoals])
+			setNewGoal("")
+		}
 	}
 
 	return (
@@ -26,7 +28,13 @@ export default function App() {
 				<View style={styles.heading_secondary_container}>
 					<Text style={styles.heading_secondary}>Goals</Text>
 				</View>
-				{goals.map((goal)=> <View key={goal} style={styles.goals_item}><Text>{goal}</Text></View>)}
+				<FlatList
+					data={goals}
+					renderItem={itemData=> (
+						<View key={itemData.item} style={styles.goals_item}>
+							<Text>{itemData.item}</Text>
+						</View>
+					)}/>
 			</View>
 		</View>
 	);
