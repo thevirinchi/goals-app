@@ -2,10 +2,17 @@ import { StatusBar } from 'expo-status-bar';
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, TextInput, View, Button, ScrollView, FlatList } from 'react-native';
 
+import Heading from "./components/Heading"
+import GoalItem from "./components/GoalItem"
+
 export default function App() {
 
 	const [newGoal, setNewGoal] = useState("")
 	const [goals, setGoals] = useState([])
+
+	useEffect (()=>{
+		console.log(goals)
+	}, [goals])
 
 	const goalChangeHandler = (text) => {
 		setNewGoal(text)
@@ -25,15 +32,11 @@ export default function App() {
 				<Button title="ADD" style={styles.addGoals_Button} onPress={addGoalHandler}/>
 			</View>
 			<View style={styles.goals}>
-				<View style={styles.heading_secondary_container}>
-					<Text style={styles.heading_secondary}>Goals</Text>
-				</View>
+				<Heading text="Goals"/>
 				<FlatList
 					data={goals}
 					renderItem={itemData=> (
-						<View key={itemData.item} style={styles.goals_item}>
-							<Text>{itemData.item}</Text>
-						</View>
+						<GoalItem data={itemData} key={itemData}/>
 					)}/>
 			</View>
 		</View>
@@ -44,12 +47,6 @@ const styles = StyleSheet.create({
 	root: {
 		paddingVertical: 40,
 		paddingHorizontal: 32
-	},
-	heading_secondary_container:{
-		paddingVertical: 10
-	},
-	heading_secondary:{
-		fontSize: 16
 	},
 	addGoals: {
 		flexDirection: "row",
@@ -71,11 +68,4 @@ const styles = StyleSheet.create({
 		flexDirection: "column",
 		width: "100%"
 	},
-	goals_item:{
-		paddingHorizontal: 10,
-		paddingVertical: 8,
-		borderRadius: 8,
-		backgroundColor: "#efefef",
-		marginVertical: 4
-	}
 });
