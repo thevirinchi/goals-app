@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 const GoalItem = props => {
 	return (
@@ -12,7 +12,7 @@ const GoalItem = props => {
 }
 
 const styles = StyleSheet.create({
-	goals_item:{
+	goals_item: {
 		paddingHorizontal: 10,
 		paddingVertical: 8,
 		borderRadius: 8,
