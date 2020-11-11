@@ -10,19 +10,21 @@ export default function App() {
 	const [newGoal, setNewGoal] = useState("")
 	const [goals, setGoals] = useState([])
 
-	useEffect (()=>{
-		console.log(goals)
-	}, [goals])
-
 	const goalChangeHandler = (text) => {
 		setNewGoal(text)
 	}
 
 	const addGoalHandler = () => {
 		if(newGoal.length>2){
-			setGoals(currentGoals => [newGoal, ...currentGoals])
+			setGoals(currentGoals => [{title: newGoal, id: (currentGoals.length + 1)}, ...currentGoals])
 			setNewGoal("")
 		}
+	}
+
+	const onGoalPressHandler = (id) => {
+		setGoals(currentGoals=>{
+			return currentGoals.filter((goal) => goal.id !== id)
+		})
 	}
 
 	return (
@@ -36,7 +38,7 @@ export default function App() {
 				<FlatList
 					data={goals}
 					renderItem={itemData=> (
-						<GoalItem data={itemData} key={itemData}/>
+						<GoalItem data={itemData} key={toString(itemData.id)} onGoalPress={onGoalPressHandler}/>
 					)}/>
 			</View>
 		</View>
