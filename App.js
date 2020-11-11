@@ -1,14 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useEffect, useState} from 'react';
-import { StyleSheet, Text, TextInput, View, Button, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, TextInput, View, Button, FlatList } from 'react-native';
 
 import Heading from "./components/Heading"
 import GoalItem from "./components/GoalItem"
+import ConfirmDialogue from "./components/ConfirmDialogue"
 
 export default function App() {
 
 	const [newGoal, setNewGoal] = useState("")
 	const [goals, setGoals] = useState([])
+	const [deleteGoalId, setDeleteGoalId] = useState()
+	const [isDeleteMode, toggleDeleteMode] = useState(false)
 
 	const goalChangeHandler = (text) => {
 		setNewGoal(text)
@@ -21,14 +24,30 @@ export default function App() {
 		}
 	}
 
-	const onGoalPressHandler = (id) => {
+	const onGoalDeleteHandler = () => {
 		setGoals(currentGoals=>{
-			return currentGoals.filter((goal) => goal.id !== id)
+			return currentGoals.filter((goal) => goal.id !== deleteGoalId)
 		})
+		toggleDeleteMode(false)
+	}
+
+	const onGoalCancelHandler = () => {
+		setDeleteGoalId()
+		toggleDeleteMode(false)
+	}
+
+	const onGoalPressHandler = (id) => {
+		if(!isDeleteMode){
+			toggleDeleteMode(true)
+			setDeleteGoalId(id)
+		}
 	}
 
 	return (
 		<View style={styles.root}>
+
+			<ConfirmDialogue text="Are you sure you want to delete this goal ?" successText="Delete" cancelText="Cancel" mode={isDeleteMode} animation="fade" onSuccessHandler={onGoalDeleteHandler} onCancelHandler={onGoalCancelHandler}/>
+
 			<View style={styles.addGoals}>
 				<TextInput placeholder="Enter a goal" style={styles.addGoals_Input} onChangeText={goalChangeHandler} value={newGoal}/>
 				<Button title="ADD" style={styles.addGoals_Button} onPress={addGoalHandler}/>
